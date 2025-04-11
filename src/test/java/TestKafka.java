@@ -17,9 +17,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
 
-/**
- * test kafka can't poll data
- */
 public class TestKafka {
 
     String BOOTSTRAP_SERVERS = "127.0.0.1:9092";
@@ -60,7 +57,6 @@ public class TestKafka {
      *   └──────▲─┴──▲────┴───────▲─┴───▲───┘
      * box = segment, num = offset, ▲ = commitTransaction: non-continuous offsets appear
      * </pre>
-     * <p>
      */
     public void prepareData() {
         try (Admin admin = Admin.create(getProducerConfig());
@@ -124,12 +120,12 @@ public class TestKafka {
         props.put(ProducerConfig.TRANSACTION_TIMEOUT_CONFIG, 100);
         props.put(ProducerConfig.TRANSACTIONAL_ID_CONFIG, "test-tx");
         props.put(ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG, true);
-        props.setProperty(ProducerConfig.MAX_IN_FLIGHT_REQUESTS_PER_CONNECTION, "5");
-        props.setProperty(ProducerConfig.RETRIES_CONFIG, String.valueOf(Integer.MAX_VALUE));
-        props.setProperty(ProducerConfig.DELIVERY_TIMEOUT_MS_CONFIG, "2000");
-        props.setProperty(ProducerConfig.ACKS_CONFIG, "all");
-        props.setProperty(ProducerConfig.REQUEST_TIMEOUT_MS_CONFIG, "1000");
-        props.setProperty(ProducerConfig.MAX_BLOCK_MS_CONFIG, "1000");
+        props.put(ProducerConfig.MAX_IN_FLIGHT_REQUESTS_PER_CONNECTION, 5);
+        props.put(ProducerConfig.RETRIES_CONFIG, Integer.MAX_VALUE);
+        props.put(ProducerConfig.DELIVERY_TIMEOUT_MS_CONFIG, 2000);
+        props.put(ProducerConfig.ACKS_CONFIG, "all");
+        props.put(ProducerConfig.REQUEST_TIMEOUT_MS_CONFIG, 1000);
+        props.put(ProducerConfig.MAX_BLOCK_MS_CONFIG, 1000);
         return props;
     }
 
